@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">BMI</string><string name="underweight">Underweight</string>
+    <string name="healthy_weight">Healthy Weight</string>
+    <string name="overweight">Overweight</string>
+    <string name="obesity">Obesity</string>
+    <string name="about_author">About author</string>
+    <string name="history">History</string>
+    <string name="title_activity_bmi_description">BmiDescriptionActivity</string>
+    <string name="title_activity_history">HistoryActivity</string>
+    <string name="underweight_description">You are underweight.</string>
+    <string name="healthy_weight_description">You have a healthy weight.</string>
+    <string name="overweight_description">You are overweight.</string>
+    <string name="obesity_description">You are obese.</string>
+    <string name="main_screen">main_screen</string>
+    <string name="author_bio">Author bio</string>
+    <string name="author_name">Maja Placek</string>
+</resources>
