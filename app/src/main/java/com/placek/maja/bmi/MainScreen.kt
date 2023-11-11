@@ -1,5 +1,6 @@
 package com.placek.maja.bmi
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,8 +26,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -39,12 +38,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.navArgument
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,7 +75,7 @@ fun RowScope.ActionButton(text: String, onClick: () -> Unit, enabled: Boolean = 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTextField(state: ValueState, imeAction: ImeAction, onValueChange: (String) -> Unit) {
+fun CustomTextField(state: ValueState, onValueChange: (String) -> Unit) {
     val focusManager = LocalFocusManager.current
     OutlinedTextField(
         value = state.value,
@@ -121,8 +118,8 @@ fun MainScreen(navController: NavController, viewModel: BMIViewModel) {
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 ModeSelector(viewModel.selectedUnitMode, updateMode = viewModel::updateMode)
-                CustomTextField(viewModel.heightState, ImeAction.Next, viewModel::updateHeight)
-                CustomTextField(viewModel.weightState, ImeAction.Done, viewModel::updateWeight)
+                CustomTextField(viewModel.heightState, viewModel::updateHeight)
+                CustomTextField(viewModel.weightState, viewModel::updateWeight)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -134,16 +131,22 @@ fun MainScreen(navController: NavController, viewModel: BMIViewModel) {
                 Text(
                     text = "%.2f".format(viewModel.bmi),
                     style = MaterialTheme.typography.headlineSmall,
-                    color = getBMIColor(bmi = viewModel.bmi)
+                    color = Color.Black
                 )
                 Divider(modifier = Modifier.fillMaxWidth(.7f), thickness = 2.5.dp)
                 Text(
                     text = viewModel.result,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.secondary
+                    color = Color.Black,
+                    modifier = Modifier
+                        .background(
+                            color = getBMIColor(bmi = viewModel.bmi),
+                            shape = RoundedCornerShape(8.dp),
+                        )
+                        .padding(8.dp)
                 )
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate(Screen.BmiDescriptionScreen.withArgs(viewModel.bmi.toString())) },
                     enabled = viewModel.canCalculate()
                 ) {
                     Text("View details", fontSize = 15.sp)
@@ -187,13 +190,3 @@ fun TopAppBarWithMenu(
     )
 }
 
-@Composable
-fun getBMIColor(bmi: Double): Color {
-    return when {
-        bmi == 0.0 -> MaterialTheme.colorScheme.primary
-        bmi < 18.5 -> Color.Red // Underweight
-        bmi < 24.9 -> Color.Green // Normal weight
-        bmi < 29.9 -> Color.Yellow // Overweight
-        else -> Color.Red // Obese
-    }
-}
