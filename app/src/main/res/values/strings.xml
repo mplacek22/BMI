@@ -19,4 +19,6 @@
     <string name="category">Category</string>
     <string name="bmi_result_title">BMI Result</string>
     <string name="bmi_calculation_history">BMI Calculation History</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
 </resources>

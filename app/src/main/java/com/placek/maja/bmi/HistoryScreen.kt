@@ -55,37 +55,30 @@ fun HistoryScreen(navController: NavController, history: Set<String>?) {
 @Composable
 fun BMIHistoryTable(bmiHistory: Set<String>) {
     LazyColumn {
-        item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text("Date", style = MaterialTheme.typography.bodyLarge)
-                Text("BMI", style = MaterialTheme.typography.bodyLarge)
-                Text("Weight", style = MaterialTheme.typography.bodyLarge)
-                Text("Height", style = MaterialTheme.typography.bodyLarge)
-                Text("Category", style = MaterialTheme.typography.bodyLarge)
-            }
-        }
         items(bmiHistory.toList()) { bmiEntry ->
-            val (date, bmi, weight, height, category) = parseBMIData(bmiEntry)
+            val (date, bmi, weight, height, _) = parseBMIData(bmiEntry)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(date, style = MaterialTheme.typography.bodyMedium)
-                Text(bmi, style = MaterialTheme.typography.bodyMedium)
-                Text(weight, style = MaterialTheme.typography.bodyMedium)
-                Text(height, style = MaterialTheme.typography.bodyMedium)
-                Text(category, style = MaterialTheme.typography.bodyMedium)
+                Column {
+                    Text(date, style = MaterialTheme.typography.bodyMedium)
+                    val weightStr = stringResource(id = R.string.weight)
+                    Text("$weightStr: $weight", style = MaterialTheme.typography.bodyMedium)
+                    val heightStr = stringResource(id = R.string.height)
+                    Text("$heightStr: $height", style = MaterialTheme.typography.bodyMedium)
+
+                }
+                Column {
+                    Text(bmi, style = MaterialTheme.typography.headlineMedium, color = getBMIColor(bmi = bmi.toDouble()))
+                }
             }
         }
     }
 }
+
 
 @Composable
 fun parseBMIData(data: String): BMIHistoryEntry {

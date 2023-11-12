@@ -16,9 +16,9 @@ class BMIViewModel(private val context: Context) : ViewModel(){
         private set
     var selectedUnitMode by mutableStateOf(UnitMode.Metric)
         private set
-    var heightState by mutableStateOf(ValueState("Height", "cm"))
+    var heightState by mutableStateOf(ValueState(context.getString(R.string.height), "cm"))
         private set
-    var weightState by mutableStateOf(ValueState("Weight", "kg"))
+    var weightState by mutableStateOf(ValueState(context.getString(R.string.weight), "kg"))
         private set
 
     private var calculator: ICalculateBMI = BMICalculatorMetric()

@@ -183,7 +183,7 @@ fun TopAppBarWithMenu(
                     navController.navigate(Screen.AboutAuthorScreen.route)
                 })
                 DropdownMenuItem(text = { Text(text = stringResource(R.string.history)) }, onClick = {
-                    navController.navigate(Screen.BmiDescriptionScreen.withArgs(viewModel.bmi.toString()))
+                    navController.navigate(Screen.HistoryScreen.withArgs(viewModel.getBMIHistory().joinToString(";")))
                 })
             }
         }

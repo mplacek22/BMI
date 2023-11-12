@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
+import androidx.navigation.navArgument
 import androidx.navigation.compose.rememberNavController
 
 @Composable
@@ -19,24 +19,24 @@ fun Navigation(viewModel: BMIViewModel){
             arguments = listOf(
                 navArgument("bmi"){
                     type = NavType.FloatType
-                    defaultValue = 0.0
+                    defaultValue = 0.0f
                     nullable = false
                 }
             )
         ){entry ->
-            BmiDescriptionScreen(navController = navController, bmi = entry.arguments?.getDouble("bmi"))
+            BmiDescriptionScreen(navController = navController, bmi = entry.arguments?.getFloat("bmi")?.toDouble())
         }
         composable(
             route = Screen.HistoryScreen.route + "/{history}",
             arguments = listOf(
                 navArgument("history"){
-                    type = NavType.StringArrayType
-                    defaultValue = 0.0
+                    type = NavType.StringType
+                    defaultValue = ""
                     nullable = false
                 }
             )
         ){entry ->
-            BmiDescriptionScreen(navController = navController, bmi = entry.arguments?.getDouble("bmi"))
+            HistoryScreen(navController = navController, history = entry.arguments?.getString("history")?.split(";")?.toSet() ?: emptySet())
         }
         composable(
             route = Screen.AboutAuthorScreen.route,
