@@ -1,12 +1,18 @@
 package com.placek.maja.bmi
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -36,7 +42,8 @@ fun BmiDescriptionScreen(navController: NavController,bmi: Double?) {
     }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .statusBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -73,6 +80,45 @@ fun BmiDescriptionScreen(navController: NavController,bmi: Double?) {
             color = Color.DarkGray
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
+
+        BMITable()
     }
 }
+
+@Composable
+fun BMITable() {
+    LazyColumn {
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text("BMI range", style = MaterialTheme.typography.headlineMedium)
+                Text("Category", style = MaterialTheme.typography.headlineMedium)
+            }
+        }
+        items(bmiData) { bmiEntry ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(bmiEntry.range, style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(id = bmiEntry.categoryResId), style = MaterialTheme.typography.bodyMedium)
+            }
+        }
+    }
+}
+
+data class BMIData(val range: String, @StringRes val categoryResId: Int)
+
+val bmiData = listOf(
+    BMIData("< 18.5", R.string.underweight),
+    BMIData("18.5 – 24.9", R.string.healthy_weight),
+    BMIData("25 – 29.9", R.string.overweight),
+    BMIData("> 30", R.string.obesity)
+)
