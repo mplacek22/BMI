@@ -60,8 +60,9 @@ fun BmiDescriptionScreen(navController: NavController,bmi: Double?) {
 
         Spacer(modifier = Modifier.height(32.dp))
 
+        val formattedBMI = String.format("%.1f", bmi)
         Text(
-            text = "BMI: $bmi",
+            text = "BMI: $formattedBMI",
             style = MaterialTheme.typography.headlineMedium,
             color = Color.Black,
             modifier = Modifier

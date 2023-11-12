@@ -10,8 +10,6 @@ class MainActivity : ComponentActivity() {
         val viewModel  = BMIViewModel(this)
         setContent {
             Navigation(viewModel = viewModel)
-//            MainScreen(navController = rememberNavController(), viewModel = viewModel)
-//            BmiDescriptionScreen(navController = rememberNavController(), bmi = 25.5)
         }
     }
 }
