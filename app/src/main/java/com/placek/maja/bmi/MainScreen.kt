@@ -135,7 +135,7 @@ fun MainScreen(navController: NavController, viewModel: BMIViewModel) {
                 )
                 Divider(modifier = Modifier.fillMaxWidth(.7f), thickness = 2.5.dp)
                 Text(
-                    text = viewModel.result,
+                    text = viewModel.category,
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.Black,
                     modifier = Modifier
@@ -147,7 +147,7 @@ fun MainScreen(navController: NavController, viewModel: BMIViewModel) {
                 )
                 Button(
                     onClick = { navController.navigate(Screen.BmiDescriptionScreen.withArgs(viewModel.bmi.toString())) },
-                    enabled = viewModel.canCalculate()
+                    enabled = viewModel.canCalculate() && viewModel.bmi != 0.0 // bmi was calculated
                 ) {
                     Text("View details", fontSize = 15.sp)
                 }
@@ -173,7 +173,7 @@ fun TopAppBarWithMenu(
     var expanded by remember { mutableStateOf(false) }
 
     TopAppBar(
-        title = { Text(text = "BMI Calculator") },
+        title = { Text(text = stringResource(R.string.title)) },
         actions = {
             IconButton(onClick = { expanded = true }) {
                 Icon(imageVector = Icons.Default.MoreVert, contentDescription = null)

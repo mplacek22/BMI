@@ -1,21 +1,111 @@
 package com.placek.maja.bmi
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryScreen(history: Set<String>?) {
-    if (history != null) {
-        if (history.isNotEmpty()) {
-            Column {
-                Text("BMI Calculation History:")
-                for (entry in history) {
-                    Text(entry)
+fun HistoryScreen(navController: NavController, history: Set<String>?) {
+    Column (
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        TopAppBar(
+            title = {
+                Text(text = stringResource(R.string.bmi_calculation_history))
+            },
+            navigationIcon = {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
                 }
             }
-        } else {
-            Text("No history available.")
+        )
+        if (history != null) {
+            if (history.isNotEmpty()) {
+                BMIHistoryTable(bmiHistory = history)
+            } else {
+                Text("No history available.")
+            }
         }
     }
 }
+@Composable
+fun BMIHistoryTable(bmiHistory: Set<String>) {
+    LazyColumn {
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text("Date", style = MaterialTheme.typography.bodyLarge)
+                Text("BMI", style = MaterialTheme.typography.bodyLarge)
+                Text("Weight", style = MaterialTheme.typography.bodyLarge)
+                Text("Height", style = MaterialTheme.typography.bodyLarge)
+                Text("Category", style = MaterialTheme.typography.bodyLarge)
+            }
+        }
+        items(bmiHistory.toList()) { bmiEntry ->
+            val (date, bmi, weight, height, category) = parseBMIData(bmiEntry)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(date, style = MaterialTheme.typography.bodyMedium)
+                Text(bmi, style = MaterialTheme.typography.bodyMedium)
+                Text(weight, style = MaterialTheme.typography.bodyMedium)
+                Text(height, style = MaterialTheme.typography.bodyMedium)
+                Text(category, style = MaterialTheme.typography.bodyMedium)
+            }
+        }
+    }
+}
+
+@Composable
+fun parseBMIData(data: String): BMIHistoryEntry {
+    val parts = data.split(",")
+    return if (parts.size == 5) {
+        val date = parts[0].trim()
+        val bmi = parts[1].trim()
+        val weight = parts[2].trim()
+        val height = parts[3].trim()
+        val category = parts[4].trim()
+        BMIHistoryEntry(date, bmi, weight, height, category)
+    } else {
+        BMIHistoryEntry("", "0.0", "0.0", "0.0", "Invalid Data")
+    }
+}
+
+data class BMIHistoryEntry(
+    val date: String,
+    val bmi: String,
+    val weight: String,
+    val height: String,
+    val category: String
+)

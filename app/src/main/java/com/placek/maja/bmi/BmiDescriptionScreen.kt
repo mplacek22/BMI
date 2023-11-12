@@ -49,7 +49,7 @@ fun BmiDescriptionScreen(navController: NavController,bmi: Double?) {
     ) {
         TopAppBar(
             title = {
-                Text(text = "BMI Result")
+                Text(text = stringResource(R.string.bmi_result_title))
             },
             navigationIcon = {
                 IconButton(onClick = { navController.popBackStack() }) {
@@ -61,7 +61,7 @@ fun BmiDescriptionScreen(navController: NavController,bmi: Double?) {
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = "Your BMI: $bmi",
+            text = "BMI: $bmi",
             style = MaterialTheme.typography.headlineMedium,
             color = Color.Black,
             modifier = Modifier
@@ -96,8 +96,8 @@ fun BMITable() {
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("BMI range", style = MaterialTheme.typography.headlineMedium)
-                Text("Category", style = MaterialTheme.typography.headlineMedium)
+                Text(stringResource(R.string.bmi_range), style = MaterialTheme.typography.headlineMedium)
+                Text(stringResource(R.string.category), style = MaterialTheme.typography.headlineMedium)
             }
         }
         items(bmiData) { bmiEntry ->

@@ -5,15 +5,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class BMIViewModel(private val context: Context) : ViewModel(){
     var bmi by mutableStateOf(0.0)
         private set
-    var result by mutableStateOf("")
+    var category by mutableStateOf("")
         private set
     var selectedUnitMode by mutableStateOf(UnitMode.Metric)
         private set
-    var heightState by mutableStateOf(ValueState("Height", "m"))
+    var heightState by mutableStateOf(ValueState("Height", "cm"))
         private set
     var weightState by mutableStateOf(ValueState("Weight", "kg"))
         private set
@@ -51,7 +54,7 @@ class BMIViewModel(private val context: Context) : ViewModel(){
         heightState = heightState.copy(value = "", error = null)
         weightState = weightState.copy(value = "", error = null)
         bmi = 0.0
-        result = ""
+        category = ""
     }
 
     fun calculate() {
@@ -63,7 +66,7 @@ class BMIViewModel(private val context: Context) : ViewModel(){
             weightState = weightState.copy(error = "Invalid weight value")
         else {
             bmi = calculator.calculate(height, weight)
-            result = when {
+            category = when {
                 bmi < 18.5 -> context.getString(R.string.underweight)
                 bmi in 18.5..24.9 -> context.getString(R.string.healthy_weight)
                 bmi in 25.0..29.9 -> context.getString(R.string.overweight)
@@ -75,13 +78,30 @@ class BMIViewModel(private val context: Context) : ViewModel(){
     }
 
     fun canCalculate(): Boolean {
-        return heightState.value != null && weightState.value != null
+        return heightState.value != "" && weightState.value != ""
     }
 
-    fun saveBMIHistory() {
+    private fun saveBMIHistory() {
         val history = sharedPreferences.getStringSet("history", setOf())?.toMutableSet() ?: mutableSetOf()
-        history.add("$bmi: $result")
+
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val currentDate = dateFormat.format(Date())
+        val formattedBMI = String.format(Locale.US, "%.1f", bmi)
+        val weight = weightState.value + " " + weightState.suffix
+        val height = heightState.value + " " + heightState.suffix
+
+        val historyEntry = "$currentDate, $formattedBMI, $weight, $height, $category"
+        history.add(historyEntry)
+
+        while (history.size > 10) {
+            history.remove(history.first())
+        }
+
         sharedPreferences.edit().putStringSet("history", history).apply()
+    }
+
+    fun clearBMIHistory() {
+        sharedPreferences.edit().remove("history").apply()
     }
 
     fun getBMIHistory(): Set<String> {

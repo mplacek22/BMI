@@ -14,4 +14,9 @@
     <string name="main_screen">main_screen</string>
     <string name="author_bio">Author bio</string>
     <string name="author_name">Maja Placek</string>
+    <string name="title">BMI Calculator</string>
+    <string name="bmi_range">BMI range</string>
+    <string name="category">Category</string>
+    <string name="bmi_result_title">BMI Result</string>
+    <string name="bmi_calculation_history">BMI Calculation History</string>
 </resources>
