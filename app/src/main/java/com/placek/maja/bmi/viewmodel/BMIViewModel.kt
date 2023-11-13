@@ -1,10 +1,14 @@
-package com.placek.maja.bmi
+package com.placek.maja.bmi.viewmodel
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.placek.maja.bmi.R
+import com.placek.maja.bmi.calculator.BMICalculatorImperial
+import com.placek.maja.bmi.calculator.BMICalculatorMetric
+import com.placek.maja.bmi.calculator.ICalculateBMI
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

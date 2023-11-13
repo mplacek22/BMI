@@ -1,4 +1,4 @@
-package com.placek.maja.bmi
+package com.placek.maja.bmi.calculator
 
 class BMICalculatorMetric : ICalculateBMI {
     override fun calculate(heightInCm: Double, weightInKg: Double): Double {

@@ -1,4 +1,4 @@
-package com.placek.maja.bmi
+package com.placek.maja.bmi.viewmodel
 
 enum class UnitMode {
     Imperial,

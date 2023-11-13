@@ -1,4 +1,4 @@
-package com.placek.maja.bmi
+package com.placek.maja.bmi.screens
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -24,6 +24,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.placek.maja.bmi.R
+import com.placek.maja.bmi.composables.TopAppBarWithPopBack
+import com.placek.maja.bmi.composables.getBMIColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

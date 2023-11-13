@@ -1,8 +1,9 @@
-package com.placek.maja.bmi
+package com.placek.maja.bmi.composables
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import com.placek.maja.bmi.R
 
 @Composable
 fun getBMIColor(bmi: Double): Color {

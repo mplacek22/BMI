@@ -1,4 +1,4 @@
-package com.placek.maja.bmi
+package com.placek.maja.bmi.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +42,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.placek.maja.bmi.viewmodel.BMIViewModel
+import com.placek.maja.bmi.R
+import com.placek.maja.bmi.viewmodel.UnitMode
+import com.placek.maja.bmi.viewmodel.ValueState
+import com.placek.maja.bmi.composables.getBMIColor
 
 
 @OptIn(ExperimentalMaterial3Api::class)

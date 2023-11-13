@@ -1,4 +1,4 @@
-package com.placek.maja.bmi
+package com.placek.maja.bmi.screens
 
 sealed class Screen(val route: String){
     object MainScreen : Screen("main_screen")

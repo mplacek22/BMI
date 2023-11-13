@@ -1,4 +1,4 @@
-package com.placek.maja.bmi
+package com.placek.maja.bmi.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,7 +24,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.placek.maja.bmi.R
 import com.placek.maja.bmi.R.drawable.author_image
+import com.placek.maja.bmi.composables.TopAppBarWithPopBack
 
 @Composable
 fun AboutAuthorScreen(navController: NavController) {

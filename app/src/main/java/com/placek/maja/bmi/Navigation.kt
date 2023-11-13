@@ -6,6 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.compose.rememberNavController
+import com.placek.maja.bmi.screens.AboutAuthorScreen
+import com.placek.maja.bmi.screens.BmiDescriptionScreen
+import com.placek.maja.bmi.screens.HistoryScreen
+import com.placek.maja.bmi.screens.MainScreen
+import com.placek.maja.bmi.screens.Screen
+import com.placek.maja.bmi.viewmodel.BMIViewModel
 
 @Composable
 fun Navigation(viewModel: BMIViewModel){
