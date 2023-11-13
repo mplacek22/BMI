@@ -68,10 +68,9 @@ class BMIViewModel(private val context: Context) : ViewModel(){
             bmi = calculator.calculate(height, weight)
             category = when {
                 bmi < 18.5 -> context.getString(R.string.underweight)
-                bmi in 18.5..24.9 -> context.getString(R.string.healthy_weight)
-                bmi in 25.0..29.9 -> context.getString(R.string.overweight)
-                bmi >= 30.0 -> context.getString(R.string.obesity)
-                else -> error("Invalid params")
+                bmi < 24.9 -> context.getString(R.string.healthy_weight)
+                bmi < 29.9 -> context.getString(R.string.overweight)
+                else -> context.getString(R.string.obesity)
             }
             saveBMIHistory()
         }
@@ -82,7 +81,7 @@ class BMIViewModel(private val context: Context) : ViewModel(){
     }
 
     private fun saveBMIHistory() {
-        val history = sharedPreferences.getStringSet("history", setOf())?.toMutableSet() ?: mutableSetOf()
+        val history = sharedPreferences.getStringSet("history", setOf())?.toMutableSet() ?: LinkedHashSet()
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val currentDate = dateFormat.format(Date())

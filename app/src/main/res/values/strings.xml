@@ -12,7 +12,7 @@
     <string name="overweight_description">You are overweight.</string>
     <string name="obesity_description">You are obese.</string>
     <string name="main_screen">main_screen</string>
-    <string name="author_bio">Author bio</string>
+    <string name="author_bio">Hello there! 👋 I\'m Maja, a passionate third-year IT student at Wroclaw University of Science and Technology, where I\'m exploring the fascinating world of technology and innovation.</string>
     <string name="author_name">Maja Placek</string>
     <string name="title">BMI Calculator</string>
     <string name="bmi_range">BMI range</string>
