@@ -28,7 +28,7 @@ import com.placek.maja.bmi.composables.getBMIColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryScreen(navController: NavController, history: Set<String>?) {
+fun HistoryScreen(navController: NavController, history: List<String>?) {
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -55,7 +55,7 @@ fun HistoryScreen(navController: NavController, history: Set<String>?) {
     }
 }
 @Composable
-fun BMIHistoryTable(bmiHistory: Set<String>) {
+fun BMIHistoryTable(bmiHistory: List<String>) {
     LazyColumn {
         items(bmiHistory.toList()) { bmiEntry ->
             val (date, bmi, weight, height, _) = parseBMIData(bmiEntry)

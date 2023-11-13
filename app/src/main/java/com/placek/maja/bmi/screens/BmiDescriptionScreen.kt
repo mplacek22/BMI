@@ -45,7 +45,7 @@ fun BmiDescriptionScreen(navController: NavController,bmi: Double?) {
             .statusBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TopAppBarWithPopBack(navController = navController)
+        TopAppBarWithPopBack(navController = navController, title = stringResource(id = R.string.bmi_result_title))
 
         Spacer(modifier = Modifier.height(32.dp))
 

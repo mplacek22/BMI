@@ -2,6 +2,7 @@ package com.placek.maja.bmi.viewmodel
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -12,22 +13,24 @@ import com.placek.maja.bmi.calculator.ICalculateBMI
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
-class BMIViewModel(private val context: Context) : ViewModel(){
-    var bmi by mutableStateOf(0.0)
+class BMIViewModel(private val appContext: Context) : ViewModel(){
+    var bmi by mutableDoubleStateOf(0.0)
         private set
     var category by mutableStateOf("")
         private set
     var selectedUnitMode by mutableStateOf(UnitMode.Metric)
         private set
-    var heightState by mutableStateOf(ValueState(context.getString(R.string.height), "cm"))
+    var heightState by mutableStateOf(ValueState(appContext.getString(R.string.height), "cm"))
         private set
-    var weightState by mutableStateOf(ValueState(context.getString(R.string.weight), "kg"))
+    var weightState by mutableStateOf(ValueState(appContext.getString(R.string.weight), "kg"))
         private set
 
     private var calculator: ICalculateBMI = BMICalculatorMetric()
 
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("BMIHistory", Context.MODE_PRIVATE)
+    private val sharedPreferences: SharedPreferences = appContext.getSharedPreferences("BMIHistory", Context.MODE_PRIVATE)
 
     fun updateHeight(it: String) {
         heightState = heightState.copy(value = it, error = null)
@@ -71,10 +74,10 @@ class BMIViewModel(private val context: Context) : ViewModel(){
         else {
             bmi = calculator.calculate(height, weight)
             category = when {
-                bmi < 18.5 -> context.getString(R.string.underweight)
-                bmi < 24.9 -> context.getString(R.string.healthy_weight)
-                bmi < 29.9 -> context.getString(R.string.overweight)
-                else -> context.getString(R.string.obesity)
+                bmi < 18.5 -> appContext.getString(R.string.underweight)
+                bmi < 24.9 -> appContext.getString(R.string.healthy_weight)
+                bmi < 29.9 -> appContext.getString(R.string.overweight)
+                else -> appContext.getString(R.string.obesity)
             }
             saveBMIHistory()
         }
@@ -85,29 +88,37 @@ class BMIViewModel(private val context: Context) : ViewModel(){
     }
 
     private fun saveBMIHistory() {
-        val history = sharedPreferences.getStringSet("history", setOf())?.toMutableSet() ?: LinkedHashSet()
+        val history = sharedPreferences.getString("history", null)?.let {
+            Gson().fromJson<List<String>>(it, object : TypeToken<List<String>>() {}.type)
+        }?.toMutableList() ?: mutableListOf()
 
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
         val currentDate = dateFormat.format(Date())
         val formattedBMI = String.format(Locale.US, "%.1f", bmi)
-        val weight = weightState.value + " " + weightState.suffix
-        val height = heightState.value + " " + heightState.suffix
+        val weight = "${weightState.value} ${weightState.suffix}"
+        val height = "${heightState.value} ${heightState.suffix}"
 
         val historyEntry = "$currentDate, $formattedBMI, $weight, $height, $category"
-        history.add(historyEntry)
+        history.add(0, historyEntry)
 
         while (history.size > 10) {
-            history.remove(history.first())
+            history.removeAt(history.size - 1)
         }
 
-        sharedPreferences.edit().putStringSet("history", history).apply()
+        val historyJson = Gson().toJson(history)
+        sharedPreferences.edit().putString("history", historyJson).apply()
     }
 
     fun clearBMIHistory() {
         sharedPreferences.edit().remove("history").apply()
     }
 
-    fun getBMIHistory(): Set<String> {
-        return sharedPreferences.getStringSet("history", setOf()) ?: setOf()
+    fun getBMIHistory(): List<String> {
+        val historyJson = sharedPreferences.getString("history", null)
+        return if (historyJson != null) {
+            Gson().fromJson(historyJson, object : TypeToken<List<String>>() {}.type)
+        } else {
+            emptyList()
+        }
     }
 }

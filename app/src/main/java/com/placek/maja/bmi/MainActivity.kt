@@ -8,7 +8,7 @@ import com.placek.maja.bmi.viewmodel.BMIViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModel  = BMIViewModel(this)
+        val viewModel  = BMIViewModel(applicationContext)
         setContent {
             Navigation(viewModel = viewModel)
         }

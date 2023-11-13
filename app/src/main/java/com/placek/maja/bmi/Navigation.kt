@@ -42,7 +42,7 @@ fun Navigation(viewModel: BMIViewModel){
                 }
             )
         ){entry ->
-            HistoryScreen(navController = navController, history = entry.arguments?.getString("history")?.split(";")?.toSet() ?: emptySet())
+            HistoryScreen(navController = navController, history = entry.arguments?.getString("history")?.split(";")?.toList() ?: emptyList())
         }
         composable(
             route = Screen.AboutAuthorScreen.route,

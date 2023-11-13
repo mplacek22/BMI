@@ -183,7 +183,7 @@ fun TopAppBarWithMenu(
             IconButton(onClick = { expanded = true }) {
                 Icon(imageVector = Icons.Default.MoreVert, contentDescription = null)
             }
-            DropdownMenu(expanded = expanded, onDismissRequest = { /*TODO*/ }) {
+            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 DropdownMenuItem(text =  { Text(text = stringResource(R.string.about_author)) }, onClick = {
                     navController.navigate(Screen.AboutAuthorScreen.route)
                 })

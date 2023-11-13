@@ -8,15 +8,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import com.placek.maja.bmi.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBarWithPopBack(navController: androidx.navigation.NavController) {
+fun TopAppBarWithPopBack(navController: androidx.navigation.NavController, title : String) {
     TopAppBar(
         title = {
-            Text(text = stringResource(R.string.bmi_result_title))
+            Text(text = title)
         },
         navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
