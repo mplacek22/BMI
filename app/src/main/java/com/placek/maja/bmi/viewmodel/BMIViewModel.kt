@@ -1,36 +1,32 @@
 package com.placek.maja.bmi.viewmodel
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.placek.maja.bmi.R
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.placek.maja.bmi.calculator.BMICalculatorImperial
 import com.placek.maja.bmi.calculator.BMICalculatorMetric
 import com.placek.maja.bmi.calculator.ICalculateBMI
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
-class BMIViewModel(private val appContext: Context) : ViewModel(){
+class BMIViewModel(
+    private val sharedPreferences: SharedPreferences
+) : ViewModel(){
     var bmi by mutableDoubleStateOf(0.0)
-        private set
-    var category by mutableStateOf("")
         private set
     var selectedUnitMode by mutableStateOf(UnitMode.Metric)
         private set
-    var heightState by mutableStateOf(ValueState(appContext.getString(R.string.height), "cm"))
+    var heightState by mutableStateOf(ValueState("cm"))
         private set
-    var weightState by mutableStateOf(ValueState(appContext.getString(R.string.weight), "kg"))
+    var weightState by mutableStateOf(ValueState("kg"))
         private set
 
     private var calculator: ICalculateBMI = BMICalculatorMetric()
-
-    private val sharedPreferences: SharedPreferences = appContext.getSharedPreferences("BMIHistory", Context.MODE_PRIVATE)
 
     fun updateHeight(it: String) {
         heightState = heightState.copy(value = it, error = null)
@@ -61,7 +57,6 @@ class BMIViewModel(private val appContext: Context) : ViewModel(){
         heightState = heightState.copy(value = "", error = null)
         weightState = weightState.copy(value = "", error = null)
         bmi = 0.0
-        category = ""
     }
 
     fun calculate() {
@@ -73,12 +68,6 @@ class BMIViewModel(private val appContext: Context) : ViewModel(){
             weightState = weightState.copy(error = "Invalid weight value")
         else {
             bmi = calculator.calculate(height, weight)
-            category = when {
-                bmi < 18.5 -> appContext.getString(R.string.underweight)
-                bmi < 24.9 -> appContext.getString(R.string.healthy_weight)
-                bmi < 29.9 -> appContext.getString(R.string.overweight)
-                else -> appContext.getString(R.string.obesity)
-            }
             saveBMIHistory()
         }
     }
@@ -98,7 +87,7 @@ class BMIViewModel(private val appContext: Context) : ViewModel(){
         val weight = "${weightState.value} ${weightState.suffix}"
         val height = "${heightState.value} ${heightState.suffix}"
 
-        val historyEntry = "$currentDate, $formattedBMI, $weight, $height, $category"
+        val historyEntry = "$currentDate, $formattedBMI, $weight, $height"
         history.add(0, historyEntry)
 
         while (history.size > 10) {

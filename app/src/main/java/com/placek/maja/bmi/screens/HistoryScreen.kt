@@ -20,8 +20,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.placek.maja.bmi.R
 import com.placek.maja.bmi.composables.getBMIColor
@@ -58,11 +58,11 @@ fun HistoryScreen(navController: NavController, history: List<String>?) {
 fun BMIHistoryTable(bmiHistory: List<String>) {
     LazyColumn {
         items(bmiHistory.toList()) { bmiEntry ->
-            val (date, bmi, weight, height, _) = parseBMIData(bmiEntry)
+            val (date, bmi, weight, height) = parseBMIData(bmiEntry)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(dimensionResource(id = R.dimen.medium_space)),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
@@ -71,7 +71,6 @@ fun BMIHistoryTable(bmiHistory: List<String>) {
                     Text("$weightStr: $weight", style = MaterialTheme.typography.bodyMedium)
                     val heightStr = stringResource(id = R.string.height)
                     Text("$heightStr: $height", style = MaterialTheme.typography.bodyMedium)
-
                 }
                 Column {
                     Text(bmi, style = MaterialTheme.typography.headlineMedium, color = getBMIColor(bmi = bmi.toDouble()))
@@ -85,15 +84,14 @@ fun BMIHistoryTable(bmiHistory: List<String>) {
 @Composable
 fun parseBMIData(data: String): BMIHistoryEntry {
     val parts = data.split(",")
-    return if (parts.size == 5) {
+    return if (parts.size == 4) {
         val date = parts[0].trim()
         val bmi = parts[1].trim()
         val weight = parts[2].trim()
         val height = parts[3].trim()
-        val category = parts[4].trim()
-        BMIHistoryEntry(date, bmi, weight, height, category)
+        BMIHistoryEntry(date, bmi, weight, height)
     } else {
-        BMIHistoryEntry("", "0.0", "0.0", "0.0", "Invalid Data")
+        BMIHistoryEntry("", "0.0", "0.0", "0.0")
     }
 }
 
@@ -102,5 +100,4 @@ data class BMIHistoryEntry(
     val bmi: String,
     val weight: String,
     val height: String,
-    val category: String
 )

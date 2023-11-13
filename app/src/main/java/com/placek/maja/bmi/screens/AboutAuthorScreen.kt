@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,13 +34,13 @@ fun AboutAuthorScreen(navController: NavController) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(dimensionResource(id = R.dimen.medium_space)),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
             TopAppBarWithPopBack(navController = navController, title = stringResource(R.string.about_author))
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.medium_space)))
         }
 
         item {
@@ -48,7 +49,7 @@ fun AboutAuthorScreen(navController: NavController) {
                     .size(160.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.primary)
-                    .padding(4.dp)
+                    .padding(dimensionResource(id = R.dimen.x_small_space))
             ) {
                 Image(
                     painter = painterResource(id = author_image),
@@ -56,7 +57,7 @@ fun AboutAuthorScreen(navController: NavController) {
                     contentScale = ContentScale.Inside
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.medium_space)))
         }
 
         item {
@@ -66,7 +67,7 @@ fun AboutAuthorScreen(navController: NavController) {
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.medium_space)))
         }
 
         item {
@@ -76,7 +77,7 @@ fun AboutAuthorScreen(navController: NavController) {
                 color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.medium_space)))
         }
     }
 }
